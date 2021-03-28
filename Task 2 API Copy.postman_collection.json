@@ -1,0 +1,658 @@
+{
+	"info": {
+		"_postman_id": "a8538fa4-49c1-4096-810a-9fb8a9a69ae4",
+		"name": "Task 2 API Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Авторизоваться под сотрудником 1.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains access token\"] = responseBody.has(\"access_token\") === true;\r",
+							"  pm.collectionVariables.set(\"token\", data.access_token);\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body doesn't contain access token:\" + responseBody] = false;\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ZjkwMTI0ODc2OTU2NWUxZTBjYmY0Nzk1OTllMWYzZTYxM2IzMTU0NjNhODQwMzkyY2M5MzBmZjk3YjAwODgzYg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/auth/access_token",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"auth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.Cоздание задачи",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {",
+							"    ",
+							"  var data = JSON.parse(responseBody);",
+							"  pm.collectionVariables.set(\"task_id\", data.data.id);",
+							"}",
+							"else {var data = JSON.parse(responseBody);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"contentType\": \"Task\",\n        \"humanNumber\": 1963,\n        \"name\": \"Заавтоматизированная дичь\",\n        \"isOverdue\": false,\n        \"status\": \"assigned\",\n        \"statusChangeTime\": {\n            \"contentType\": \"DateTime\",\n            \"value\": \"2021-03-20T20:00:09+00:00\"\n        },\n        \"owner\": {\n            \"contentType\": \"Employee\",\n            \"id\": \"1000104\"\n        },\n        \"isTemplateOwnerCurrentUser\": true,\n        \"deadline\": null,\n        \"subTasks\": [],\n        \"subTasksCount\": 0,\n        \"actualSubTasksCount\": 0,\n        \"responsible\": {\n            \"contentType\": \"Employee\",\n            \"id\": \"1000105\"\n        },\n        \"completed\": 0,\n        \"isUrgent\": false,\n        \"isNegotiation\": false,\n        \"auditors\": [],\n        \"auditorsCount\": 0,\n        \"executors\": [],\n        \"executorsCount\": 0,\n        \"isTemplate\": false,\n        \"originalTemplate\": null,\n        \"schedule\": null,\n        \"attaches\": [],\n        \"attachesCount\": 0,\n        \"actualStart\": {\n            \"contentType\": \"DateTime\",\n            \"value\": \"2021-03-20T20:00:09+00:00\"\n        },\n        \"plannedWork\": {\n            \"contentType\": \"DateInterval\",\n            \"value\": 0\n        },\n        \"actualWork\": {\n            \"contentType\": \"DateInterval\",\n            \"value\": 0\n        },\n        \"previousTasks\": [],\n        \"nextTasksCount\": 0,\n        \"actualFinish\": null,\n        \"plannedFinish\": null,\n        \"duration\": {\n            \"contentType\": \"DateInterval\",\n            \"value\": 0\n        },\n        \"parents\": [],\n        \"parentsCount\": 0,\n        \"project\": null,\n        \"participants\": [\n            {\n                \"contentType\": \"Employee\",\n                \"id\": \"1000104\"\n            },\n            {\n                \"contentType\": \"Employee\",\n                \"id\": \"1000105\"\n            }\n        ]\n}\n        "
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.Название задачи",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {",
+							"    ",
+							"  var data = JSON.parse(responseBody);",
+							"  pm.collectionVariables.set(\"task_id\", data.data.id);",
+							"}",
+							"else {var data = JSON.parse(responseBody);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"subject\": \"<p>заавтоматизируй эту дичь \\\"полностью \\\"</p>\"}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Авторизоваться под Сотрудником 2.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains access token\"] = responseBody.has(\"access_token\") === true;\r",
+							"  pm.collectionVariables.set(\"token\", data.access_token);\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body doesn't contain access token:\" + responseBody] = false;\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ZjkwMTI0ODc2OTU2NWUxZTBjYmY0Nzk1OTllMWYzZTYxM2IzMTU0NjNhODQwMzkyY2M5MzBmZjk3YjAwODgzYg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Exploratory2@1.1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Exploratory2@1.1",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/auth/access_token",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"auth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Принять задачу, поставленную Сотрудником 1.",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \"contentType\": \"TaskActionRequest\",\n    \"action\": \"act_accept_task\"\n}\n"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}/doAction",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}",
+						"doAction"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Завершить поставленную задачу.",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contentType\": \"TaskActionRequest\",\n    \"action\": \"act_done\"\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}/doAction",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}",
+						"doAction"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Написать комментарий по задаче. Текст любой",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contentType\": \"CommentCreateActionRequest\",\r\n    \"comment\": {\r\n            \"contentType\": \"Comment\",\r\n            \"content\": \"<p>2 часа ночи)</p>\",\r\n            \"isDropped\": false,\r\n            \"subject\": {\r\n                \"contentType\": \"Task\"\r\n            }\r\n}\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}/comments",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Авторизоваться под сотрудником 1. Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains access token\"] = responseBody.has(\"access_token\") === true;\r",
+							"  pm.collectionVariables.set(\"token\", data.access_token);\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body doesn't contain access token:\" + responseBody] = false;\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ZjkwMTI0ODc2OTU2NWUxZTBjYmY0Nzk1OTllMWYzZTYxM2IzMTU0NjNhODQwMzkyY2M5MzBmZjk3YjAwODgzYg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/auth/access_token",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"auth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. Принять задачу",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contentType\": \"TaskActionRequest\",\r\n    \"action\": \"act_accept_work\"\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}/doAction",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}",
+						"doAction"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. Удалить задачу",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}/",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Провкерка",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YTI0ZjgwMGM1YjQ3MzNhZGFiZDU3OTc5NmRhYzYxMDcyNzAyODBlMjhhYTdlZTJmN2Q2YmVkYjcwOTNkOWIwYw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "YTIwZjI3NjY1NDE1N2NjYjYxOWFmNmIxMjBlYTQzYjYyOGQ1ZGRlYWY4MGVhNmVkNDQyOWU3OTIwOTJlOGNlMg"
+		},
+		{
+			"key": "task_id",
+			"value": "1002235"
+		}
+	]
+}
